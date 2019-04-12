@@ -1,4 +1,4 @@
-﻿FIPS Code,State,Area_Name,Pov_Num_All,Pov_Pct_All,Pov_Num_Over17,Pov_Pct_Over17,Pov_Num_Under17,Pov_Pct_Under17,Median_Income
+﻿FIPS_Code,State,Area_Name,Pov_Num_All,Pov_Pct_All,Pov_Num_Over17,Pov_Pct_Over17,Pov_Num_Under17,Pov_Pct_Under17,Median_Income
 0,US,United States,"46,153,077",14.7,"15,000,273",20.7,"10,245,028",19.5,"55,775"
 1000,AL,Alabama,"875,853",18.5,"288,450",26.5,"201,222",25.2,"44,833"
 1001,AL,Autauga County,"6,966",12.7,"2,544",18.8,"1,898",18.4,"56,580"
