@@ -5,7 +5,9 @@ def main():
     header[0] = header[0][3:]
     table.insert(0, header)
     utils.write_table("poverty_data_clean.csv", table)
-
+    for line in table:
+        utils.convert_to_float(line)
+    print(table[1])
 
 def clean_poverty():
     table = []
