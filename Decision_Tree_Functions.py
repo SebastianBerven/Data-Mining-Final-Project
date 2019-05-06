@@ -4,7 +4,7 @@ import math
 
 def decision_tree_classifier(table, header, predicted, predictors, k):
     '''
-    Reads a table and returns the accuracy and results.
+    Reads a table and returns the results.
     Parameter table: The table to be tested.
     Parameter header: Header of table.
     Parameter predicted: Column to be estimated.
@@ -105,7 +105,10 @@ def partition_instances(instances, att_index, att_domain):
 
 def make_leaf_node(table, class_index, total):
     values, counts = utils.get_frequencies(table, class_index)
-    inner = [values[counts.index(max(counts))], len(table), total, round(len(table)*100/total, 1)]
+    if total == 0:
+        inner = [values[counts.index(max(counts))], len(table), 0, round(len(table)*100, 1)]
+    else:
+        inner = [values[counts.index(max(counts))], len(table), total, round(len(table)*100/total, 1)]
     buffer = ["Leaves", inner]
     return buffer
 
