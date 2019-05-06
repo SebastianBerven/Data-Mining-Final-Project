@@ -1,6 +1,29 @@
 import numpy as np
 import random
 import os
+from tabulate import tabulate
+
+def rules_pretty_print(rules, intro):
+    '''
+    Prints ARM rules.
+    Parameter rules: Dictionary of rules.
+    Parameter intro: String describing rule set.
+    '''
+    print()
+    print(intro)
+    header = ["Association Rule", "Support", "Confidence", "Lift"]
+    rule_list = []
+    for rule in rules:
+        lhs = str(rule["lhs"][0]) # Generates LHS rules.
+        if len(rule["lhs"]) > 1:
+            for i in range(1, len(rule["lhs"])):
+                lhs += (" AND " + str(rule["lhs"][i]))
+        rhs = str(rule["rhs"][0]) # Generates RHS rules.
+        if len(rule["rhs"]) > 1:
+            for i in range(1, len(rule["rhs"])):
+                lhs += (" AND " + str(rule["rhs"][i]))
+        rule_list.append([lhs + " => " + rhs, rule["support"], rule["confidence"], rule["lift"]]) # Adds statistics.
+    print(tabulate(rule_list, header, tablefmt="rst", showindex="always"))
 
 def create_dot_file(tree, destination):
     outfile = open(destination+'.dot', "w+")
