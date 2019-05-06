@@ -14,7 +14,7 @@ def knn_classifier(table, predicted, predictors, test_nums, k = 5):
     '''
     random_table = utils.shuffle_table(table)
     random_table = normalize_table(table, predictors)
-    groups = strat_partition(random_table, predicted, test_nums) # Creates equally distributed partitions.
+    groups = utils.strat_partition(random_table, predicted, test_nums) # Creates equally distributed partitions.
     results = []
     for x in range(test_nums):
         test_set = groups[x]
@@ -61,23 +61,6 @@ def euc_distance(vector1, vector2):
         else:
             squares += (v1 - v2)**2
     return np.sqrt(squares)
-
-def strat_partition(table, key, k):
-    '''
-    Partitions data into equally distributed groups.
-    Parameter table: The table to be split.
-    Parameter key: The key to group the table on.
-    Parameter k: Number of groups to be split into.
-    Returns: List of partitions.
-    '''
-    _, groups = utils.group_by(table, key) # Splits table based on key.
-    partitions = [[] for _ in range(k)]
-    count = 0
-    for x in groups:
-        for y in x:
-            partitions[count%k].append(y) # Apportions values from groups evenly among partitions.
-            count += 1
-    return partitions
 
 def normalize_table(table, predictors):
     '''

@@ -45,6 +45,23 @@ def shuffle_table(table):
         randomized[i], randomized[rand_index] = randomized[rand_index], randomized[i]
     return randomized
 
+def strat_partition(table, key, k):
+    '''
+    Partitions data into equally distributed groups.
+    Parameter table: The table to be split.
+    Parameter key: The key to group the table on.
+    Parameter k: Number of groups to be split into.
+    Returns: List of partitions.
+    '''
+    _, groups = group_by(table, key) # Splits table based on key.
+    partitions = [[] for _ in range(k)]
+    count = 0
+    for x in groups:
+        for y in x:
+            partitions[count%k].append(y) # Apportions values from groups evenly among partitions.
+            count += 1
+    return partitions
+
 def holdout_partitions(table, split):
     '''
     Generates holdout partitions.
