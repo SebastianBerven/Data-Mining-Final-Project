@@ -77,6 +77,27 @@ def holdout_partitions(table, split):
     test_set = randomized[split_index:]
     return train_set, test_set
 
+def compute_accuracy(data):
+    '''
+    Computes an accuracy value from a dataset formatted [Item, Guess, Actual].
+    Parameter data: List of data to be compared.
+    Returns: Accuracy value to two decimal places.
+    '''
+    for i in range(len(data)):
+        data[i] = data[i][-2:]
+    values, _ = get_frequencies(data, 0) # Gets a list of unique values.
+    accuracy = 0
+    for value in values:
+        true_positives, true_negatives = 0, 0
+        for row in data:
+            if row[0] == value and row[1] == value: # Finds true positives.
+                true_positives += 1
+            elif row[0] != value and row[1] != value: # Finds true negatives.
+                true_negatives += 1
+        accuracy += ((true_positives + true_negatives)/len(data))
+    accuracy = round(accuracy/len(values), 2) # Calculates accuracy
+    return accuracy
+
 def lin_reg(x_data, y_data):
     '''
     Generates linear regression coefficients.

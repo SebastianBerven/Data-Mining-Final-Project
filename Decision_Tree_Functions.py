@@ -109,7 +109,6 @@ def make_leaf_node(table, class_index, total):
     buffer = ["Leaves", inner]
     return buffer
 
-
 def compute_domains(indexes,data):
     domains = {}
     for i in indexes:
