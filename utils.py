@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import os
+import copy
 from tabulate import tabulate
 
 def rules_pretty_print(rules, intro):
@@ -24,6 +25,58 @@ def rules_pretty_print(rules, intro):
                 lhs += (" AND " + str(rule["rhs"][i]))
         rule_list.append([lhs + " => " + rhs, rule["support"], rule["confidence"], rule["lift"]]) # Adds statistics.
     print(tabulate(rule_list, header, tablefmt="rst", showindex="always"))
+
+def confusion_matrix(results, class_title, matrix_title):
+    '''
+    Prints out a confusion matrix.
+    Parameter results: Results to be graphed on matrix.
+    Parameter class_title: Title of class being evaluated.
+    Parameter matrix_title: Matrix title.
+    '''
+    results = [row[-2:] for row in results]
+    unique_values = set()
+    for row in results:
+        for value in row:
+            unique_values.add(value)
+    row_header = sorted(list(unique_values))
+    entries = len(row_header)
+    column_header = [class_title]+row_header+["Total", "Recognition (%)"]
+    table = create_matrix(entries, row_header) # Initializes matrices
+    table = fill_table(table, results, column_header, row_header) # Fills matrices with data
+    
+    print(matrix_title)
+    print(tabulate(table, column_header, tablefmt="rst"))
+    print()
+
+def fill_table(table, data, column_header, row_header):
+    '''
+    Reads a table and fills in with specified data.
+    Parameter table: The table to be filled.
+    Parameter data: Data to be put into table.
+    Returns: Filled table.
+    '''
+    for row in data:
+        table[row_header.index(row[1])][column_header.index(row[0])] += 1 # Increases count at correct index
+    for x in range(len(table)):
+        total = sum(table[x][1:]) # Calculates total of actual row
+        try:
+            recognition = round(table[x][x+1]/total, 4) # Recognition = True Positives / Positives
+        except:
+            recognition = 0 # Catches if total in row is zero.
+        table[x].append(total)
+        table[x].append(100*recognition)
+    return table
+
+def create_matrix(k, row_header):
+    '''
+    Initializes a table in matrix format.
+    Parameter k: Number of rows and columns in matrix.
+    Returns: Table.
+    '''
+    table = [[0 for i in range(k+1)] for j in range(k)]
+    for x in range(len(table)):
+        table[x][0] = row_header[x] # Adds row header
+    return table
 
 def create_dot_file(tree, destination):
     outfile = open(destination+'.dot', "w+")

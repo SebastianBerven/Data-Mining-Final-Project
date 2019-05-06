@@ -2,7 +2,7 @@ import utils
 import numpy as np
 import math
 
-def naive_bayes_classifier(table, header, k, predicted, predictors, cont_attr):
+def naive_bayes_classifier(table, header, k, predicted, predictors, cont_attr = []):
     '''
     Reads a table and returns the specified column.
     Parameter table: The table to be tested.
