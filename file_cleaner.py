@@ -18,12 +18,29 @@ def normalize_combined():
     columns.append([round(columns[6][i]*12*100/columns[3][i], 1) for i in range(len(columns[0]))])
     new_header.append("Pct_Income_as_Rent")
 
-    columns[2] = normalize_data(columns[2], 3) # Poverty
-    columns[3] = normalize_data(columns[3], 3) # Median Income
-    columns[4] = normalize_data(columns[4], 3) # Crime Rate
-    columns[5] = normalize_data(columns[5], 3) # Population
-    columns[6] = normalize_data(columns[6], 3) # Rent
-    columns[7] = normalize_data(columns[7], 5) # Rent as percent of income.
+    columns[2] = normalize_data(columns[2]) # Poverty
+    columns[3] = normalize_data(columns[3]) # Median Income
+    columns[4] = discretize_data(columns[4], 5) # Crime Rate
+    columns[5] = normalize_data(columns[5]) # Population
+    columns[6] = normalize_data(columns[6]) # Rent
+    columns[7] = normalize_data(columns[7]) # Rent as percent of income.
+
+    new_table = []
+    for x in range(len(columns[0])):
+        buffer = []
+        for column in columns:
+            buffer.append(column[x])
+        new_table.append(buffer)
+
+    new_table.insert(0, new_header)
+    utils.write_table("combined_data_normalized.csv", new_table)
+
+    columns[2] = discretize_data(columns[2], 3) # Poverty
+    columns[3] = discretize_data(columns[3], 3) # Median Income
+    #columns[4] = discretize_data(columns[4], 3) # Crime Rate
+    columns[5] = discretize_data(columns[5], 3) # Population
+    columns[6] = discretize_data(columns[6], 3) # Rent
+    columns[7] = discretize_data(columns[7], 5) # Rent as percent of income.
     
     new_table = []
     for x in range(len(columns[0])):
@@ -33,9 +50,19 @@ def normalize_combined():
         new_table.append(buffer)
     
     new_table.insert(0, new_header)
-    utils.write_table("combined_data_normalized.csv", new_table)
+    utils.write_table("combined_data_discretized.csv", new_table)
 
-def normalize_data(data, num_segs):
+def normalize_data(data):
+    lowest = min(data)
+    highest = max(data) - lowest
+
+    for x in range(len(data)):
+        data[x] = round((data[x]-lowest)/highest, 3)
+    
+    return data
+
+
+def discretize_data(data, num_segs):
     groups = equal_width_bins(data, num_segs)
     rename_data(groups, data)
     return data
@@ -78,6 +105,7 @@ def equal_width_bins(data, num_segs):
             if num >= min(data)+(width*x) and num < min(data)+(width*(x+1)): #Apportions data to correct bin.
                 buffer.append(num)
         groups.append(buffer)
+    groups[num_segs-1].append(max(data))
     return groups
 
 

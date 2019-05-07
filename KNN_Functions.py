@@ -22,10 +22,10 @@ def knn_classifier(table, predicted, predictors, test_nums, k = 5):
         for y in groups[:x] + groups[x+1:]: # Creates test set
             for z in y:
                 train_set.append(z)
-        results += run_knn_tests(train_set, test_set, k, predictors)
+        results += run_knn_tests(train_set, test_set, k, predicted, predictors)
     return results
 
-def run_knn_tests(training_set, test_set, k, predictors):
+def run_knn_tests(training_set, test_set, k, predicted, predictors):
     '''
     Runs KNN tests.
     Parameter training_set: Training data.
@@ -44,7 +44,7 @@ def run_knn_tests(training_set, test_set, k, predictors):
         choices, count = utils.get_frequencies(candidates, -5)
         test.append(item)
         test.append(choices[count.index(max(count))]) # Finds most common class
-        test.append(item[0])
+        test.append(item[predicted])
         closest.append(test)
 
         for row in training_set: # Deletes distance row
