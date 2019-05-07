@@ -19,10 +19,10 @@ def normalize_combined():
     new_header.append("Pct_Income_as_Rent")
 
     columns[2] = normalize_data(columns[2], 3) # Poverty
-    columns[3] = normalize_data(columns[3], 5) # Median Income
-    columns[4] = normalize_data(columns[4], 5) # Crime Rate
-    columns[5] = normalize_data(columns[5], 5) # Population
-    columns[6] = normalize_data(columns[6], 5) # Rent
+    columns[3] = normalize_data(columns[3], 3) # Median Income
+    columns[4] = normalize_data(columns[4], 3) # Crime Rate
+    columns[5] = normalize_data(columns[5], 3) # Population
+    columns[6] = normalize_data(columns[6], 3) # Rent
     columns[7] = normalize_data(columns[7], 5) # Rent as percent of income.
     
     new_table = []
