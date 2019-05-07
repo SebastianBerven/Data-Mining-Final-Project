@@ -1,13 +1,88 @@
 import utils
 
 def main():
-    clean_poverty()
-    clean_rent()
-    clean_crime()
-    combine_datasets()
+    #clean_poverty()
+    # clean_rent()
+    # clean_crime()
+    # combine_datasets()
+    normalize_combined()
+
+def normalize_combined():
+    combined_table, header = utils.read_table("combined_data.csv", True)
+    columns = []
+    new_header = []
+    for x in range(len(header)):
+        if x not in [2,6,7,8,9,10,11,12,13,16]:
+            new_header.append(header[x])
+            columns.append(utils.get_column(combined_table, x))
+    columns.append([round(columns[6][i]*12*100/columns[3][i], 1) for i in range(len(columns[0]))])
+    new_header.append("Pct_Income_as_Rent")
+
+    columns[2] = normalize_data(columns[2], 3) # Poverty
+    columns[3] = normalize_data(columns[3], 5) # Median Income
+    columns[4] = normalize_data(columns[4], 5) # Crime Rate
+    columns[5] = normalize_data(columns[5], 5) # Population
+    columns[6] = normalize_data(columns[6], 5) # Rent
+    columns[7] = normalize_data(columns[7], 5) # Rent as percent of income.
+    
+    new_table = []
+    for x in range(len(columns[0])):
+        buffer = []
+        for column in columns:
+            buffer.append(column[x])
+        new_table.append(buffer)
+    
+    new_table.insert(0, new_header)
+    utils.write_table("combined_data_normalized.csv", new_table)
+
+def normalize_data(data, num_segs):
+    groups = equal_width_bins(data, num_segs)
+    rename_data(groups, data)
+    return data
+
+def rename_data(groups, data):
+    if len(groups) == 3:
+        for x in range(len(data)):
+            if data[x] in groups[0]:
+                data[x] = "Low"
+            elif data[x] in groups[1]:
+                data[x] = "Medium"
+            elif data[x] in groups[2]:
+                data[x] = "High"
+    elif len(groups) == 5:
+        for x in range(len(data)):
+            if data[x] in groups[0]:
+                    data[x] = "Very Low"
+            elif data[x] in groups[1]:
+                    data[x] = "Low"
+            elif data[x] in groups[2]:
+                    data[x] = "Medium"
+            elif data[x] in groups[3]:
+                    data[x] = "High"
+            elif data[x] in groups[4]:
+                    data[x] = "Very High"
+    elif len(groups) == 10:
+        for x in range(len(data)):
+            for i in range(len(groups)):
+                if data[x] in groups[i]:
+                    data[x] = i+1
+                    break
+
+
+def equal_width_bins(data, num_segs):
+    width = (max(data)-min(data))/num_segs #Finds width of bins.
+    groups = []
+    for x in range(num_segs):
+        buffer = []
+        for num in data:
+            if num >= min(data)+(width*x) and num < min(data)+(width*(x+1)): #Apportions data to correct bin.
+                buffer.append(num)
+        groups.append(buffer)
+    return groups
 
 
 def combine_datasets():
+    
     poverty_table, _ = utils.read_table("poverty_data_clean.csv", True)
     crime_table, _ = utils.read_table("crime_data_clean.csv", True)
     rent_table, _ = utils.read_table("rent_data_no_dups.csv", True)
@@ -31,9 +106,7 @@ def combine_datasets():
 
     new_table.insert(0, combined_header)
     utils.write_table("combined_data.csv", new_table)
-
-
-
+    
 def clean_crime():
     table = []
     infile = open("crime_data.csv", "r")
@@ -55,7 +128,6 @@ def clean_crime():
 
     utils.write_table("crime_data_clean.csv", table)
     infile.close()
-
 
 def clean_rent():
     table = []
