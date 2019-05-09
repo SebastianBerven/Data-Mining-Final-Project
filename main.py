@@ -60,16 +60,16 @@ def do_arm():
     utils.rules_pretty_print(rules, "Association Rule Mining for Crime Rate Factors")
 
 def data_vis():
-    data, header = utils.read_table("combined_data_discretized.csv", True)
-    values, counts = utils.get_frequencies(data, header.index("Crime_Rate_per_100000"))
-    #dv.frequency_diagram(values, counts, "Crime Rate Distribution in the U.S", "Severity of Crime Problem", "Number of Counties", "crime_data_graphed.png")
-    values, counts = utils.get_frequencies(data, header.index("Pov_Pct_All"))
-    dv.frequency_diagram(values, counts, "Poverty Distribution in the U.S", "Severity of Poverty", "Number of Counties", "poverty_data_graphed.png")
+    data, header = utils.read_table("combined_data.csv", True)
+    x_data, y_data = utils.get_column(data, 3), utils.get_column(data, 5)
+    dv.scatter_plot(x_data, y_data, "Poverty Levels v. Crime Rate", "Poverty Levels (%)", "Crime Rate per 100,000 people", 10, "Poverty_v_Crime_graphed.png", 100, True)
+    # values, counts = utils.get_frequencies(data, header.index("Pov_Pct_All"))
+    # dv.frequency_diagram(values, counts, "Poverty Distribution in the U.S", "Severity of Poverty", "Number of Counties", "poverty_data_graphed.png")
 
 def stats():
     data, header = utils.read_table("combined_data.csv", True)
     for row in data:
-        if row[-3] == min([x for x in utils.get_column(data, -3) if x != 0 and x != 53]):
+        if row[6] == min([x for x in utils.get_column(data, 6) if x != 0]):
             print(row)
 
 main()

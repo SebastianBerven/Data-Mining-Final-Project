@@ -15,7 +15,7 @@ Best is # tests = 5 and KNN = 5 with 93% accuracy, also runs much faster.
 Testing Naive Bayes:
 Testing with normalized values treated as categorical: accuracy = 53%
 Testing with normalized values treated as continuous: accuracy = 90%
-Testing with discretized values: accuracy = 92%, but artificially low:
+Testing with discretized values: accuracy = 92%:
         Naive Bayes Classifier Prediction of Crime Rate
         =============  ======  =====  ========  ===========  ==========  =======  =================
         Crime Rate?      High    Low    Medium    Very High    Very Low    Total    Recognition (%)
