@@ -4,6 +4,7 @@ import Naive_Bayes_Functions as bayes
 import Decision_Tree_Functions as dtree
 import Random_Forest_Functions as rforest
 import ARM_Functions as arm
+import Data_Visualization as dv
 import operator
 
 def main():
@@ -11,7 +12,9 @@ def main():
     #test_naive_bayes()
     #test_decision_tree()
     #test_random_forest()
-    do_arm()
+    #do_arm()
+    #data_vis()
+    stats()
     # [County,State,Pov_Pct_All,Median_Income,Crime_Rate_per_100000,Population,Mean_Rent,Pct_Income_as_Rent]
 
 def test_knn():
@@ -55,5 +58,18 @@ def do_arm():
     data, header = utils.read_table("combined_data_discretized.csv", True)
     rules = arm.Association_Rule_Mining(data, header, minsup=.3, minconf=.95, columns=[2,3,4,5,7])
     utils.rules_pretty_print(rules, "Association Rule Mining for Crime Rate Factors")
+
+def data_vis():
+    data, header = utils.read_table("combined_data_discretized.csv", True)
+    values, counts = utils.get_frequencies(data, header.index("Crime_Rate_per_100000"))
+    #dv.frequency_diagram(values, counts, "Crime Rate Distribution in the U.S", "Severity of Crime Problem", "Number of Counties", "crime_data_graphed.png")
+    values, counts = utils.get_frequencies(data, header.index("Pov_Pct_All"))
+    dv.frequency_diagram(values, counts, "Poverty Distribution in the U.S", "Severity of Poverty", "Number of Counties", "poverty_data_graphed.png")
+
+def stats():
+    data, header = utils.read_table("combined_data.csv", True)
+    for row in data:
+        if row[-3] == min([x for x in utils.get_column(data, -3) if x != 0 and x != 53]):
+            print(row)
 
 main()
