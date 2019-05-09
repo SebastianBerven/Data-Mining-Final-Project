@@ -1,10 +1,10 @@
 import utils
 
 def main():
-    #clean_poverty()
-    # clean_rent()
-    # clean_crime()
-    # combine_datasets()
+    clean_poverty()
+    clean_rent()
+    clean_crime()
+    combine_datasets()
     normalize_combined()
 
 def normalize_combined():
@@ -38,7 +38,7 @@ def normalize_combined():
     columns[2] = discretize_data(columns[2], 3) # Poverty
     columns[3] = discretize_data(columns[3], 3) # Median Income
     #columns[4] = discretize_data(columns[4], 3) # Crime Rate
-    columns[5] = discretize_data(columns[5], 3) # Population
+    columns[5] = discretize_data(columns[5], 5) # Population
     columns[6] = discretize_data(columns[6], 3) # Rent
     columns[7] = discretize_data(columns[7], 5) # Rent as percent of income.
     
@@ -60,7 +60,6 @@ def normalize_data(data):
         data[x] = round((data[x]-lowest)/highest, 3)
     
     return data
-
 
 def discretize_data(data, num_segs):
     groups = equal_width_bins(data, num_segs)
@@ -95,7 +94,6 @@ def rename_data(groups, data):
                     data[x] = i+1
                     break
 
-
 def equal_width_bins(data, num_segs):
     width = (max(data)-min(data))/num_segs #Finds width of bins.
     groups = []
@@ -108,7 +106,6 @@ def equal_width_bins(data, num_segs):
     groups[num_segs-1].append(max(data))
     return groups
 
-
 def combine_datasets():
     
     poverty_table, _ = utils.read_table("poverty_data_clean.csv", True)
@@ -118,7 +115,8 @@ def combine_datasets():
     combined_header = ["County", "State",\
         "Pov_Num_All","Pov_Pct_All","Median_Income", \
         "Crime_Rate_per_100000","Murder","Rape","Robbery","Aggravated_Assault","Burglary","Larceny","Vehicle_Theft","Arson",\
-        "Population","Mean_Rent","Median_Rent"]
+        "Population","Mean_Rent","Median_Rent", "Latitude", "Longitude"]
+    count = 1
     for poverty_row in poverty_table:
         for crime_row in crime_table:
             for rent_row in rent_table:
@@ -126,8 +124,11 @@ def combine_datasets():
                     new_add = [poverty_row[2], poverty_row[1],\
                         poverty_row[3], poverty_row[4], poverty_row[9],\
                         crime_row[2], crime_row[3], crime_row[4], crime_row[5], crime_row[6], crime_row[7], crime_row[8], crime_row[9], crime_row[10], \
-                        crime_row[11], rent_row[9], rent_row[10]]
+                        crime_row[11], rent_row[9], rent_row[10], rent_row[7], rent_row[8]]
                     combined_table.append(new_add)
+        print("Poverty row", count)
+        count+=1
+
     
     no_dups = dict(((x[0],x[1]), x) for x in combined_table)
     new_table = list(no_dups.values())
@@ -151,7 +152,8 @@ def clean_crime():
         values.insert(1, values[0][-2:])
         values[0] = values[0][:-3]
         #utils.convert_to_float(values)
-        table.append(values)
+        if values[1] != "HI" and values[1] != "AK":
+            table.append(values)
 
 
     utils.write_table("crime_data_clean.csv", table)
@@ -166,7 +168,8 @@ def clean_rent():
         newline = line.strip() #removes whitespace characters
         values = newline.split(",") #splits on comma
         #utils.convert_to_float(values)
-        table.append(values)
+        if values[2] != "HI" and values[2] != "AK":
+            table.append(values)
 
     utils.write_table("rent_data_clean.csv", table)
     no_dups = dict(((x[1],x[3]), x) for x in table)
@@ -184,7 +187,8 @@ def clean_poverty():
         newline = newline.strip() #removes whitespace characters
         values = newline.split(",") #splits on comma
         #utils.convert_to_float(values)
-        table.append(values)
+        if values[1] != "HI" and values[1] != "AK":
+            table.append(values)
 
     header = table.pop(0)
     header[0] = header[0][3:]

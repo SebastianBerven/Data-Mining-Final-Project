@@ -4,9 +4,14 @@ import Naive_Bayes_Functions as bayes
 import Decision_Tree_Functions as dtree
 import Random_Forest_Functions as rforest
 import ARM_Functions as arm
+import operator
 
 def main():
-    test_knn()
+    #test_knn()
+    #test_naive_bayes()
+    #test_decision_tree()
+    #test_random_forest()
+    do_arm()
     # [County,State,Pov_Pct_All,Median_Income,Crime_Rate_per_100000,Population,Mean_Rent,Pct_Income_as_Rent]
 
 def test_knn():
@@ -18,5 +23,37 @@ def test_knn():
     print(accuracy)
     utils.confusion_matrix(results, "Crime Rate?", "KNN Classifier Prediction of Crime Rate")
     
+def test_naive_bayes():
+    data, header = utils.read_table("combined_data_normalized.csv", True)
+    class_index = 4
+    predictors = [2,3,5,7]
+    results = bayes.naive_bayes_classifier(data, header, 10, class_index, predictors, [2,3,5,7])
+    accuracy = utils.compute_accuracy(results)
+    print(accuracy)
+    utils.confusion_matrix(results, "Crime Rate?", "Naive Bayes Classifier Prediction of Crime Rate")
+
+
+def test_decision_tree():
+    data, header = utils.read_table("combined_data_discretized.csv", True)
+    class_index = 4
+    predictors = [2,3,5,7]
+    results = dtree.decision_tree_classifier(data, header, class_index, predictors, 30)
+    accuracy = utils.compute_accuracy(results)
+    print(accuracy)
+    utils.confusion_matrix(results, "Crime Rate?", "Decision Tree Classifier Prediction of Crime Rate")
+
+def test_random_forest():
+    data, header = utils.read_table("combined_data_discretized.csv", True)
+    class_index = 4
+    predictors = [2,3,5,7]
+    results = rforest.random_forest_classifier(data, header, class_index, predictors, 100, 25, 3)
+    accuracy = utils.compute_accuracy(results)
+    print(accuracy)
+    utils.confusion_matrix(results, "Crime Rate?", "Random Forest Classifier Prediction of Crime Rate")
+
+def do_arm():
+    data, header = utils.read_table("combined_data_discretized.csv", True)
+    rules = arm.Association_Rule_Mining(data, header, minsup=.3, minconf=.95, columns=[2,3,4,5,7])
+    utils.rules_pretty_print(rules, "Association Rule Mining for Crime Rate Factors")
 
 main()

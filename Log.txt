@@ -1,0 +1,163 @@
+Testing KNN:
+Best accuracy tested with # tests equal to 5, 10, 15, 20 and KNN equal to 5, 10, 15 ... 100
+Best is # tests = 5 and KNN = 5 with 93% accuracy, also runs much faster.
+        KNN Classifier Prediction of Crime Rate
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+        Crime Rate?      High    Low    Medium    Very High    Very Low    Total    Recognition (%)
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+        High                0      2         1            0           8       11               0
+        Low                 0     51         5            0         282      338              15.09
+        Medium              1     15         4            0          48       68               5.88
+        Very High           0      0         0            0           4        4               0
+        Very Low            1     60         2            0        2375     2438              97.42
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+
+Testing Naive Bayes:
+Testing with normalized values treated as categorical: accuracy = 53%
+Testing with normalized values treated as continuous: accuracy = 90%
+Testing with discretized values: accuracy = 92%, but artificially low:
+        Naive Bayes Classifier Prediction of Crime Rate
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+        Crime Rate?      High    Low    Medium    Very High    Very Low    Total    Recognition (%)
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+        High                0      0         0            0          11       11               0
+        Low                 0      0         0            0         338      338               0
+        Medium              0      0         0            0          68       68               0
+        Very High           0      0         0            0           4        4               0
+        Very Low            5      0         0            0        2433     2438              99.79
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+
+Testing Decision Tree:
+Best accuracy is with 30 tests, accuracy = 87%
+        Decision Tree Classifier Prediction of Crime Rate
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+        Crime Rate?      High    Low    Medium    Very High    Very Low    Total    Recognition (%)
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+        High                0      0         0            0          11       11               0
+        Low                 0      0         0            0         338      338               0
+        Medium              0      1         0            0          67       68               0
+        Very High           0      0         0            0           4        4               0
+        Very Low            0      3         0            0        2435     2438              99.88
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+
+Testing Random Forest:
+Tested using discretized values, using N, M, F choices:
+N = [10, 20, 30, 50, 100]
+M = [5, 10, 15, 20, 25]
+F = [2,3]
+Best is 100, 25, 3 with accuracy = 91%
+        Random Forest Classifier Prediction of Crime Rate
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+        Crime Rate?      High    Low    Medium    Very High    Very Low    Total    Recognition (%)
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+        High                0      0         0            0           3        3               0
+        Low                 0      0         1            0         112      113               0
+        Medium              0      0         0            0          23       23               0
+        Very High           0      0         0            0           1        1               0
+        Very Low            0      0         1            0         812      813              99.88
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+Worst is 30, 5, 2 with accuracy = 85%
+        Random Forest Classifier Prediction of Crime Rate
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+        Crime Rate?      High    Low    Medium    Very High    Very Low    Total    Recognition (%)
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+        High                0      0         0            0           3        3                  0
+        Low                 0      0         0            0         113      113                  0
+        Medium              0      0         0            0          23       23                  0
+        Very High           0      0         0            0           1        1                  0
+        Very Low            0      0         0            0         813      813                100
+        =============  ======  =====  ========  ===========  ==========  =======  =================
+Increasing N did not effect accuracy any further.
+
+
+Increasing class split from Very low, low, medium, high, very high to scale from 1-10 made things worse.
+
+KNN Classifier Prediction of Crime Rate = 85%
+=============  =====  =====  =====  =====  =====  =====  =====  =====  =====  ======  =======  =================
+  Crime Rate?    1.0    2.0    3.0    4.0    5.0    6.0    7.0    8.0    9.0    10.0    Total    Recognition (%)
+=============  =====  =====  =====  =====  =====  =====  =====  =====  =====  ======  =======  =================
+            1   1674    146     16      4      1      0      0      0      0       0     1841              90.93
+            2    501     91      4      1      0      0      0      0      0       0      597              15.24
+            3    178     39     10      4      1      0      0      0      0       0      232               4.31
+            4     74     23      7      1      1      0      0      0      0       0      106               0.94
+            5     37      9      6      1      0      0      0      0      0       0       53               0
+            6     12      2      1      0      0      0      0      0      0       0       15               0
+            7      8      0      1      0      0      0      0      0      0       0        9               0
+            8      1      1      0      0      0      0      0      0      0       0        2               0
+            9      3      0      0      0      0      0      0      0      0       0        3               0
+           10      1      0      0      0      0      0      0      0      0       0        1               0
+=============  =====  =====  =====  =====  =====  =====  =====  =====  =====  ======  =======  =================
+
+Naive Bayes Classifier Prediction of Crime Rate = 86%
+=============  =====  =====  =====  =====  =====  =====  =====  =====  =====  ======  =======  =================
+  Crime Rate?    1.0    2.0    3.0    4.0    5.0    6.0    7.0    8.0    9.0    10.0    Total    Recognition (%)
+=============  =====  =====  =====  =====  =====  =====  =====  =====  =====  ======  =======  =================
+            1   1785     28      3      4     21      0      0      0      0       0     1841              96.96
+            2    533     43     13      2      6      0      0      0      0       0      597               7.2
+            3    181     27     10     10      4      0      0      0      0       0      232               4.31
+            4     74     13     14      4      1      0      0      0      0       0      106               3.77
+            5     37     11      3      1      1      0      0      0      0       0       53               1.89
+            6     11      2      1      1      0      0      0      0      0       0       15               0
+            7      7      0      2      0      0      0      0      0      0       0        9               0
+            8      2      0      0      0      0      0      0      0      0       0        2               0
+            9      2      0      1      0      0      0      0      0      0       0        3               0
+           10      1      0      0      0      0      0      0      0      0       0        1               0
+=============  =====  =====  =====  =====  =====  =====  =====  =====  =====  ======  =======  =================
+
+Decision Tree Classifier Prediction of Crime Rate = 78%
+=============  =====  =====  =====  =====  =====  =====  =====  =====  =====  ======  =======  =================
+  Crime Rate?    1.0    2.0    3.0    4.0    5.0    6.0    7.0    8.0    9.0    10.0    Total    Recognition (%)
+=============  =====  =====  =====  =====  =====  =====  =====  =====  =====  ======  =======  =================
+            1   1831      9      1      0      0      0      0      0      0       0     1841              99.46
+            2    586     11      0      0      0      0      0      0      0       0      597               1.84
+            3    225      7      0      0      0      0      0      0      0       0      232               0
+            4    104      2      0      0      0      0      0      0      0       0      106               0
+            5     53      0      0      0      0      0      0      0      0       0       53               0
+            6     15      0      0      0      0      0      0      0      0       0       15               0
+            7      9      0      0      0      0      0      0      0      0       0        9               0
+            8      2      0      0      0      0      0      0      0      0       0        2               0
+            9      3      0      0      0      0      0      0      0      0       0        3               0
+           10      1      0      0      0      0      0      0      0      0       0        1               0
+=============  =====  =====  =====  =====  =====  =====  =====  =====  =====  ======  =======  =================
+
+Random Forest Classifier Prediction of Crime Rate = 64%
+=============  =====  =====  =====  =====  =====  =====  =====  =====  ======  =======  =================
+  Crime Rate?    1.0    2.0    3.0    4.0    5.0    6.0    7.0    9.0    10.0    Total    Recognition (%)
+=============  =====  =====  =====  =====  =====  =====  =====  =====  ======  =======  =================
+            1    613      0      0      0      0      0      0      0       0      613                100
+            2    199      0      0      0      0      0      0      0       0      199                  0
+            3     78      0      0      0      0      0      0      0       0       78                  0
+            4     35      0      0      0      0      0      0      0       0       35                  0
+            5     18      0      0      0      0      0      0      0       0       18                  0
+            6      5      0      0      0      0      0      0      0       0        5                  0
+            7      3      0      0      0      0      0      0      0       0        3                  0
+            9      1      0      0      0      0      0      0      0       0        1                  0
+           10      1      0      0      0      0      0      0      0       0        1                  0
+=============  =====  =====  =====  =====  =====  =====  =====  =====  ======  =======  =================
+
+
+ARM Results:
+Association Rule Mining for Crime Rate Factors
+====  ======================================================================================================  =========  ============  ========
+  ..  Association Rule                                                                                          Support    Confidence      Lift
+====  ======================================================================================================  =========  ============  ========
+   0  Crime_Rate_per_100000=Very Low => Population=Very Low                                                    0.852746      1         1.0021
+   1  Median_Income=Low => Population=Very Low                                                                 0.818118      0.998719  1.00082
+   2  Pov_Pct_All=Medium => Median_Income=Low                                                                  0.3078        0.998865  1.21937
+   3  Pct_Income_as_Rent=Low => Population=Very Low                                                            0.673312      0.998444  1.00054
+   4  Pov_Pct_All=Low => Population=Very Low                                                                   0.669115      0.997913  1.00001
+   5  Pov_Pct_All=Medium => Population=Very Low                                                                0.30745       0.99773   0.999828
+   6  Crime_Rate_per_100000=Very Low AND Median_Income=Low => Population=Very Low                              0.6922        1         1.0021
+   7  Crime_Rate_per_100000=Very Low AND Pct_Income_as_Rent=Low => Population=Very Low                         0.570479      1         1.0021
+   8  Crime_Rate_per_100000=Very Low AND Pov_Pct_All=Low => Population=Very Low                                0.596013      1         1.0021
+   9  Median_Income=Low AND Pct_Income_as_Rent=Low => Population=Very Low                                      0.574327      0.999391  1.00149
+  10  Median_Income=Low AND Pov_Pct_All=Low => Population=Very Low                                             0.489682      0.999286  1.00139
+  11  Population=Very Low AND Pov_Pct_All=Medium => Median_Income=Low                                          0.3071        0.998862  1.21936
+  12  Median_Income=Low AND Pov_Pct_All=Medium => Population=Very Low                                          0.3071        0.997727  0.999826
+  13  Pov_Pct_All=Medium AND Population=Very Low => Median_Income=Low                                          0.3071        0.996595  1.21815
+  14  Pct_Income_as_Rent=Low AND Pov_Pct_All=Low => Population=Very Low                                        0.436166      0.998399  1.0005
+  15  Crime_Rate_per_100000=Very Low AND Median_Income=Low AND Pct_Income_as_Rent=Low => Population=Very Low   0.484085      1         1.0021
+  16  Crime_Rate_per_100000=Very Low AND Median_Income=Low AND Pov_Pct_All=Low => Population=Very Low          0.435817      1         1.0021
+  17  Crime_Rate_per_100000=Very Low AND Pct_Income_as_Rent=Low AND Pov_Pct_All=Low => Population=Very Low     0.38475       1         1.0021
+  18  Median_Income=Low AND Pct_Income_as_Rent=Low AND Pov_Pct_All=Low => Population=Very Low                  0.337531      1         1.0021
+====  ======================================================================================================  =========  ============  ========
