@@ -116,7 +116,7 @@ def combine_datasets():
         "Pov_Num_All","Pov_Pct_All","Median_Income", \
         "Crime_Rate_per_100000","Murder","Rape","Robbery","Aggravated_Assault","Burglary","Larceny","Vehicle_Theft","Arson",\
         "Population","Mean_Rent","Median_Rent", "Latitude", "Longitude"]
-    count = 1
+
     for poverty_row in poverty_table:
         for crime_row in crime_table:
             for rent_row in rent_table:
@@ -126,9 +126,6 @@ def combine_datasets():
                         crime_row[2], crime_row[3], crime_row[4], crime_row[5], crime_row[6], crime_row[7], crime_row[8], crime_row[9], crime_row[10], \
                         crime_row[11], rent_row[9], rent_row[10], rent_row[7], rent_row[8]]
                     combined_table.append(new_add)
-        print("Poverty row", count)
-        count+=1
-
     
     no_dups = dict(((x[0],x[1]), x) for x in combined_table)
     new_table = list(no_dups.values())
