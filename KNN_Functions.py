@@ -41,7 +41,7 @@ def run_knn_tests(training_set, test_set, k, predicted, predictors):
 
         training_set.sort(key=operator.itemgetter(-1)) # Sorts on distance.
         candidates = training_set[:k] # Finds k lowest distances.
-        choices, count = utils.get_frequencies(candidates, -5)
+        choices, count = utils.get_frequencies(candidates, predicted)
         test.append(item)
         test.append(choices[count.index(max(count))]) # Finds most common class
         test.append(item[predicted])
