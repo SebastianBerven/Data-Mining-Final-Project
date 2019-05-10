@@ -39,7 +39,7 @@ def test_naive_bayes():
 def test_decision_tree():
     data, header = utils.read_table("combined_data_discretized.csv", True)
     class_index = 4
-    predictors = [2,3,5,7]
+    predictors = [2,3,5,9]
     results = dtree.decision_tree_classifier(data, header, class_index, predictors, 30)
     accuracy = utils.compute_accuracy(results)
     print(accuracy)
@@ -48,7 +48,7 @@ def test_decision_tree():
 def test_random_forest():
     data, header = utils.read_table("combined_data_discretized.csv", True)
     class_index = 4
-    predictors = [2,3,5,7]
+    predictors = [2,3,5,9]
     results = rforest.random_forest_classifier(data, header, class_index, predictors, 100, 25, 3)
     accuracy = utils.compute_accuracy(results)
     print(accuracy)
